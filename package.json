@@ -1,0 +1,75 @@
+{
+    "name": "hana-opensap-cloud",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^4",
+        "express": "^4",
+        "@sap/hana-client": "^2.4.177"
+    },
+    "devDependencies": {
+        "sqlite3": "^5"
+    },
+    "scripts": {
+        "start": "cds run",
+        "env": "cp ./default-env.json ./db/default-env.json && cp ./default-env.json ./srv/default-env.json",
+        "build": "cds build/all --clean"
+    },
+    "cds": {
+        "build": {
+            "target": ".",
+            "tasks": [
+                {
+                    "for": "hana",
+                    "src": "db",
+                    "options": {
+                        "model": [
+                            "db",
+                            "srv",
+                            "app"
+                        ]
+                    }
+                },
+                {
+                    "for": "hana",
+                    "src": "user_db",
+                    "options": {
+                        "model": [
+                            "user_db"
+                        ]
+                    }
+                },
+                {
+                    "for": "node-cf",
+                    "src": "srv",
+                    "options": {
+                        "model": [
+                            "db",
+                            "srv",
+                            "app"
+                        ]
+                    }
+                }
+            ]
+        },
+        "preview": {
+            "ui5": {
+                "version": "1.80.2"
+            }
+        },
+        "features": {
+            "snapi": true
+        },
+        "hana": {
+            "deploy-format": "hdbtable"
+        },
+        "requires": {
+            "db": {
+                "kind": "hana"
+            }
+        }
+    }
+}

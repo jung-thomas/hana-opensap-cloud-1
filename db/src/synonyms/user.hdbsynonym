@@ -1,0 +1,12 @@
+{
+  "USERDATA_USER_LOCAL": {
+    "target": {
+      "object": "USERDATA_USER"
+    }
+  },
+  "USER_DETAILS": {
+    "target": {
+      "object": "user.models::USER_DETAILS"
+    }
+  }
+}

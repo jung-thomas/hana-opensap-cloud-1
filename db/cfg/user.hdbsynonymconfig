@@ -1,0 +1,14 @@
+{
+  "USERDATA_USER_LOCAL": {
+    "target": {
+      "object": "USERDATA_USER",
+      "grantor": "hdi-user-service"
+    }
+  },
+  "USER_DETAILS": {
+    "target": {
+      "object": "user.models::USER_DETAILS",
+      "grantor": "hdi-user-service"      
+    }
+  }
+}
