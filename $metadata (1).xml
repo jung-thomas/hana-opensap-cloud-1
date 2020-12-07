@@ -1,0 +1,1536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+  </edmx:Reference>
+  <edmx:DataServices m:DataServiceVersion="2.0">
+    <Schema Namespace="MasterDataService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Addresses" EntityType="MasterDataService.Addresses"/>
+        <EntitySet Name="BusinessPartners" EntityType="MasterDataService.BusinessPartners"/>
+        <EntitySet Name="Buyer" EntityType="MasterDataService.Buyer"/>
+        <EntitySet Name="Countries" EntityType="MasterDataService.Countries"/>
+        <EntitySet Name="Countries_texts" EntityType="MasterDataService.Countries_texts"/>
+        <EntitySet Name="Currencies" EntityType="MasterDataService.Currencies"/>
+        <EntitySet Name="Currencies_texts" EntityType="MasterDataService.Currencies_texts"/>
+        <EntitySet Name="Employees" EntityType="MasterDataService.Employees"/>
+        <EntitySet Name="ProductImages" EntityType="MasterDataService.ProductImages"/>
+        <EntitySet Name="Products" EntityType="MasterDataService.Products"/>
+        <EntitySet Name="Products_texts" EntityType="MasterDataService.Products_texts"/>
+        <EntitySet Name="Regions" EntityType="MasterDataService.Regions"/>
+        <EntitySet Name="User" EntityType="MasterDataService.User"/>
+        <EntitySet Name="partnerRoles" EntityType="MasterDataService.partnerRoles"/>
+        <EntitySet Name="productCategoryVH" EntityType="MasterDataService.productCategoryVH"/>
+        <FunctionImport Name="loadProductImages" ReturnType="Edm.Boolean" m:HttpMethod="GET"/>
+        <AssociationSet Name="Addresses_country" Association="MasterDataService.Addresses_country">
+          <End Role="Addresses" EntitySet="Addresses"/>
+          <End Role="Countries" EntitySet="Countries"/>
+        </AssociationSet>
+        <AssociationSet Name="BusinessPartners_address" Association="MasterDataService.BusinessPartners_address">
+          <End Role="BusinessPartners" EntitySet="BusinessPartners"/>
+          <End Role="Addresses" EntitySet="Addresses"/>
+        </AssociationSet>
+        <AssociationSet Name="BusinessPartners_currency" Association="MasterDataService.BusinessPartners_currency">
+          <End Role="BusinessPartners" EntitySet="BusinessPartners"/>
+          <End Role="Currencies" EntitySet="Currencies"/>
+        </AssociationSet>
+        <AssociationSet Name="BusinessPartners_createdByEmployee" Association="MasterDataService.BusinessPartners_createdByEmployee">
+          <End Role="BusinessPartners" EntitySet="BusinessPartners"/>
+          <End Role="Employees" EntitySet="Employees"/>
+        </AssociationSet>
+        <AssociationSet Name="BusinessPartners_modifiedByEmployee" Association="MasterDataService.BusinessPartners_modifiedByEmployee">
+          <End Role="BusinessPartners" EntitySet="BusinessPartners"/>
+          <End Role="Employees" EntitySet="Employees"/>
+        </AssociationSet>
+        <AssociationSet Name="Countries_regions" Association="MasterDataService.Countries_regions">
+          <End Role="Countries" EntitySet="Countries"/>
+          <End Role="Regions" EntitySet="Regions"/>
+        </AssociationSet>
+        <AssociationSet Name="Countries_texts_1" Association="MasterDataService.Countries_texts_1">
+          <End Role="Countries" EntitySet="Countries"/>
+          <End Role="Countries_texts" EntitySet="Countries_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Countries_localized" Association="MasterDataService.Countries_localized">
+          <End Role="Countries" EntitySet="Countries"/>
+          <End Role="Countries_texts" EntitySet="Countries_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Currencies_texts_1" Association="MasterDataService.Currencies_texts_1">
+          <End Role="Currencies" EntitySet="Currencies"/>
+          <End Role="Currencies_texts" EntitySet="Currencies_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Currencies_localized" Association="MasterDataService.Currencies_localized">
+          <End Role="Currencies" EntitySet="Currencies"/>
+          <End Role="Currencies_texts" EntitySet="Currencies_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Employees_address" Association="MasterDataService.Employees_address">
+          <End Role="Employees" EntitySet="Employees"/>
+          <End Role="Addresses" EntitySet="Addresses"/>
+        </AssociationSet>
+        <AssociationSet Name="Employees_currency" Association="MasterDataService.Employees_currency">
+          <End Role="Employees" EntitySet="Employees"/>
+          <End Role="Currencies" EntitySet="Currencies"/>
+        </AssociationSet>
+        <AssociationSet Name="ProductImages_product" Association="MasterDataService.ProductImages_product">
+          <End Role="ProductImages" EntitySet="ProductImages"/>
+          <End Role="Products" EntitySet="Products"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_partner" Association="MasterDataService.Products_partner">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="BusinessPartners" EntitySet="BusinessPartners"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_currency" Association="MasterDataService.Products_currency">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="Currencies" EntitySet="Currencies"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_createdByEmployee" Association="MasterDataService.Products_createdByEmployee">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="Employees" EntitySet="Employees"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_modifiedByEmployee" Association="MasterDataService.Products_modifiedByEmployee">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="Employees" EntitySet="Employees"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_image" Association="MasterDataService.Products_image">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="ProductImages" EntitySet="ProductImages"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_texts_1" Association="MasterDataService.Products_texts_1">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="Products_texts" EntitySet="Products_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Products_localized" Association="MasterDataService.Products_localized">
+          <End Role="Products" EntitySet="Products"/>
+          <End Role="Products_texts" EntitySet="Products_texts"/>
+        </AssociationSet>
+        <AssociationSet Name="Regions_toCountries" Association="MasterDataService.Regions_toCountries">
+          <End Role="Regions" EntitySet="Regions"/>
+          <End Role="Countries" EntitySet="Countries"/>
+        </AssociationSet>
+      </EntityContainer>
+      <EntityType Name="Addresses">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="validFrom"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7" Nullable="false"/>
+        <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="city" Type="Edm.String" MaxLength="40"/>
+        <Property Name="postalCode" Type="Edm.String" MaxLength="10"/>
+        <Property Name="street" Type="Edm.String" MaxLength="60"/>
+        <Property Name="building" Type="Edm.String" MaxLength="10"/>
+        <NavigationProperty Name="country" Relationship="MasterDataService.Addresses_country" FromRole="Addresses" ToRole="Countries"/>
+        <Property Name="region" Type="Edm.String" MaxLength="4"/>
+        <Property Name="addressType" Type="Edm.String" MaxLength="2"/>
+        <Property Name="latitude" Type="Edm.Double"/>
+        <Property Name="longitude" Type="Edm.Double"/>
+        <Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="BusinessPartners">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="partnerRole" Type="Edm.Int32"/>
+        <Property Name="email" Type="Edm.String" MaxLength="255"/>
+        <Property Name="phoneNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="webAddress" Type="Edm.String" MaxLength="1024"/>
+        <NavigationProperty Name="address" Relationship="MasterDataService.BusinessPartners_address" FromRole="BusinessPartners" ToRole="Addresses"/>
+        <Property Name="companyName" Type="Edm.String" MaxLength="80"/>
+        <Property Name="legalForm" Type="Edm.String" MaxLength="10"/>
+        <NavigationProperty Name="currency" Relationship="MasterDataService.BusinessPartners_currency" FromRole="BusinessPartners" ToRole="Currencies"/>
+        <NavigationProperty Name="createdByEmployee" Relationship="MasterDataService.BusinessPartners_createdByEmployee" FromRole="BusinessPartners" ToRole="Employees"/>
+        <NavigationProperty Name="modifiedByEmployee" Relationship="MasterDataService.BusinessPartners_modifiedByEmployee" FromRole="BusinessPartners" ToRole="Employees"/>
+        <Property Name="address_ID" Type="Edm.Guid"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="Buyer">
+        <Key>
+          <PropertyRef Name="Id"/>
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="EmailAddress" Type="Edm.String" MaxLength="255"/>
+        <Property Name="CompanyName" Type="Edm.String" MaxLength="80"/>
+        <Property Name="City" Type="Edm.String" MaxLength="40"/>
+        <Property Name="PostalCode" Type="Edm.String" MaxLength="10"/>
+        <Property Name="Street" Type="Edm.String" MaxLength="60"/>
+        <Property Name="Building" Type="Edm.String" MaxLength="10"/>
+        <Property Name="Country" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CountryName" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Region" Type="Edm.String" MaxLength="4"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+      </EntityType>
+      <EntityType Name="Countries">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="code1" Type="Edm.Int32"/>
+        <Property Name="alpha3" Type="Edm.String" MaxLength="3"/>
+        <Property Name="iso" Type="Edm.String" MaxLength="16"/>
+        <Property Name="region" Type="Edm.String" MaxLength="20"/>
+        <Property Name="sub_region" Type="Edm.String" MaxLength="40"/>
+        <Property Name="region_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="sub_region_code" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="regions" Relationship="MasterDataService.Countries_regions" FromRole="Countries" ToRole="Regions"/>
+        <NavigationProperty Name="texts" Relationship="MasterDataService.Countries_texts_1" FromRole="Countries" ToRole="Countries_texts"/>
+        <NavigationProperty Name="localized" Relationship="MasterDataService.Countries_localized" FromRole="Countries" ToRole="Countries_texts"/>
+      </EntityType>
+      <EntityType Name="Countries_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Currencies">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+        <Property Name="numcode" Type="Edm.Int32"/>
+        <Property Name="exponent" Type="Edm.Int32"/>
+        <Property Name="minor" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Relationship="MasterDataService.Currencies_texts_1" FromRole="Currencies" ToRole="Currencies_texts"/>
+        <NavigationProperty Name="localized" Relationship="MasterDataService.Currencies_localized" FromRole="Currencies" ToRole="Currencies_texts"/>
+      </EntityType>
+      <EntityType Name="Currencies_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Employees">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="validFrom"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7" Nullable="false"/>
+        <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="nameFirst" Type="Edm.String" MaxLength="40"/>
+        <Property Name="nameMiddle" Type="Edm.String" MaxLength="40"/>
+        <Property Name="nameLast" Type="Edm.String" MaxLength="40"/>
+        <Property Name="nameInitials" Type="Edm.String" MaxLength="10"/>
+        <Property Name="sex" Type="Edm.String" MaxLength="1"/>
+        <Property Name="language" Type="Edm.String" MaxLength="1"/>
+        <Property Name="phoneNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="email" Type="Edm.String" MaxLength="255"/>
+        <Property Name="loginName" Type="Edm.String" MaxLength="12"/>
+        <NavigationProperty Name="address" Relationship="MasterDataService.Employees_address" FromRole="Employees" ToRole="Addresses"/>
+        <NavigationProperty Name="currency" Relationship="MasterDataService.Employees_currency" FromRole="Employees" ToRole="Currencies"/>
+        <Property Name="salaryAmount" Type="Edm.Decimal" Scale="2" Precision="15"/>
+        <Property Name="accountNumber" Type="Edm.String" MaxLength="10"/>
+        <Property Name="bankId" Type="Edm.String" MaxLength="10"/>
+        <Property Name="bankName" Type="Edm.String" MaxLength="255"/>
+        <Property Name="employeePicUrl" Type="Edm.String" MaxLength="255"/>
+        <Property Name="address_ID" Type="Edm.Guid"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="ProductImages" m:HasStream="true">
+        <Key>
+          <PropertyRef Name="product_productId"/>
+        </Key>
+        <NavigationProperty Name="product" Relationship="MasterDataService.ProductImages_product" FromRole="ProductImages" ToRole="Products"/>
+        <Property Name="imageType" Type="Edm.String"/>
+        <Property Name="product_productId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Products">
+        <Key>
+          <PropertyRef Name="productId"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="quantity" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="quantityUnit" Type="Edm.String" MaxLength="3"/>
+        <Property Name="productId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="typeCode" Type="Edm.String" MaxLength="2"/>
+        <Property Name="category" Type="Edm.String" MaxLength="40"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="desc" Type="Edm.String"/>
+        <NavigationProperty Name="partner" Relationship="MasterDataService.Products_partner" FromRole="Products" ToRole="BusinessPartners"/>
+        <Property Name="weightMeasure" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="weightUnit" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="currency" Relationship="MasterDataService.Products_currency" FromRole="Products" ToRole="Currencies"/>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="15"/>
+        <Property Name="width" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="depth" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="height" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="dimensionUnit" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="createdByEmployee" Relationship="MasterDataService.Products_createdByEmployee" FromRole="Products" ToRole="Employees"/>
+        <NavigationProperty Name="modifiedByEmployee" Relationship="MasterDataService.Products_modifiedByEmployee" FromRole="Products" ToRole="Employees"/>
+        <Property Name="imageUrl" Type="Edm.String"/>
+        <NavigationProperty Name="image" Relationship="MasterDataService.Products_image" FromRole="Products" ToRole="ProductImages"/>
+        <NavigationProperty Name="texts" Relationship="MasterDataService.Products_texts_1" FromRole="Products" ToRole="Products_texts"/>
+        <NavigationProperty Name="localized" Relationship="MasterDataService.Products_localized" FromRole="Products" ToRole="Products_texts"/>
+        <Property Name="partner_ID" Type="Edm.Guid"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="image_product_productId" Type="Edm.String" MaxLength="10"/>
+      </EntityType>
+      <EntityType Name="Products_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="productId"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="productId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="desc" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Regions">
+        <Key>
+          <PropertyRef Name="country"/>
+          <PropertyRef Name="sub_code"/>
+        </Key>
+        <Property Name="country" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="sub_code" Type="Edm.String" MaxLength="5" Nullable="false"/>
+        <NavigationProperty Name="toCountries" Relationship="MasterDataService.Regions_toCountries" FromRole="Regions" ToRole="Countries"/>
+        <Property Name="name" Type="Edm.String" MaxLength="80"/>
+        <Property Name="type" Type="Edm.String" MaxLength="80"/>
+      </EntityType>
+      <EntityType Name="User">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.String" Nullable="false"/>
+        <Property Name="EMAIL" Type="Edm.String" MaxLength="255"/>
+        <Property Name="FIRSTNAME" Type="Edm.String" MaxLength="40"/>
+        <Property Name="LASTNAME" Type="Edm.String" MaxLength="40"/>
+      </EntityType>
+      <EntityType Name="partnerRoles">
+        <Key>
+          <PropertyRef Name="partnerRole"/>
+        </Key>
+        <Property Name="partnerRole" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="PARTNERDESC" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="productCategoryVH">
+        <Key>
+          <PropertyRef Name="Product_Category"/>
+        </Key>
+        <Property Name="Product_Category" Type="Edm.String" MaxLength="40" Nullable="false"/>
+      </EntityType>
+      <Association Name="Addresses_country">
+        <End Role="Addresses" Type="MasterDataService.Addresses" Multiplicity="*"/>
+        <End Role="Countries" Type="MasterDataService.Countries" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Countries">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="Addresses">
+            <PropertyRef Name="country_code"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="BusinessPartners_address">
+        <End Role="BusinessPartners" Type="MasterDataService.BusinessPartners" Multiplicity="*"/>
+        <End Role="Addresses" Type="MasterDataService.Addresses" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Addresses">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="BusinessPartners">
+            <PropertyRef Name="address_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="BusinessPartners_currency">
+        <End Role="BusinessPartners" Type="MasterDataService.BusinessPartners" Multiplicity="*"/>
+        <End Role="Currencies" Type="MasterDataService.Currencies" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Currencies">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="BusinessPartners">
+            <PropertyRef Name="currency_code"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="BusinessPartners_createdByEmployee">
+        <End Role="BusinessPartners" Type="MasterDataService.BusinessPartners" Multiplicity="*"/>
+        <End Role="Employees" Type="MasterDataService.Employees" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="BusinessPartners_modifiedByEmployee">
+        <End Role="BusinessPartners" Type="MasterDataService.BusinessPartners" Multiplicity="*"/>
+        <End Role="Employees" Type="MasterDataService.Employees" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Countries_regions">
+        <End Role="Countries" Type="MasterDataService.Countries" Multiplicity="*"/>
+        <End Role="Regions" Type="MasterDataService.Regions" Multiplicity="*">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="Countries_texts_1">
+        <End Role="Countries" Type="MasterDataService.Countries" Multiplicity="*"/>
+        <End Role="Countries_texts" Type="MasterDataService.Countries_texts" Multiplicity="*">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="Countries_localized">
+        <End Role="Countries" Type="MasterDataService.Countries" Multiplicity="*"/>
+        <End Role="Countries_texts" Type="MasterDataService.Countries_texts" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Countries_texts">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="Countries">
+            <PropertyRef Name="code"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Currencies_texts_1">
+        <End Role="Currencies" Type="MasterDataService.Currencies" Multiplicity="*"/>
+        <End Role="Currencies_texts" Type="MasterDataService.Currencies_texts" Multiplicity="*">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="Currencies_localized">
+        <End Role="Currencies" Type="MasterDataService.Currencies" Multiplicity="*"/>
+        <End Role="Currencies_texts" Type="MasterDataService.Currencies_texts" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Currencies_texts">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="Currencies">
+            <PropertyRef Name="code"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Employees_address">
+        <End Role="Employees" Type="MasterDataService.Employees" Multiplicity="*"/>
+        <End Role="Addresses" Type="MasterDataService.Addresses" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="Addresses">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Employees">
+            <PropertyRef Name="address_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Employees_currency">
+        <End Role="Employees" Type="MasterDataService.Employees" Multiplicity="*"/>
+        <End Role="Currencies" Type="MasterDataService.Currencies" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Currencies">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="Employees">
+            <PropertyRef Name="currency_code"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="ProductImages_product">
+        <End Role="ProductImages" Type="MasterDataService.ProductImages" Multiplicity="*"/>
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Products">
+            <PropertyRef Name="productId"/>
+          </Principal>
+          <Dependent Role="ProductImages">
+            <PropertyRef Name="product_productId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Products_partner">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="BusinessPartners" Type="MasterDataService.BusinessPartners" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="BusinessPartners">
+            <PropertyRef Name="ID"/>
+          </Principal>
+          <Dependent Role="Products">
+            <PropertyRef Name="partner_ID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Products_currency">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="Currencies" Type="MasterDataService.Currencies" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Currencies">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="Products">
+            <PropertyRef Name="currency_code"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Products_createdByEmployee">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="Employees" Type="MasterDataService.Employees" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Products_modifiedByEmployee">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="Employees" Type="MasterDataService.Employees" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Products_image">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="ProductImages" Type="MasterDataService.ProductImages" Multiplicity="0..1">
+          <OnDelete Action="Cascade"/>
+        </End>
+        <ReferentialConstraint>
+          <Principal Role="ProductImages">
+            <PropertyRef Name="product_productId"/>
+          </Principal>
+          <Dependent Role="Products">
+            <PropertyRef Name="image_product_productId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Products_texts_1">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="Products_texts" Type="MasterDataService.Products_texts" Multiplicity="*">
+          <OnDelete Action="Cascade"/>
+        </End>
+      </Association>
+      <Association Name="Products_localized">
+        <End Role="Products" Type="MasterDataService.Products" Multiplicity="*"/>
+        <End Role="Products_texts" Type="MasterDataService.Products_texts" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Products_texts">
+            <PropertyRef Name="productId"/>
+          </Principal>
+          <Dependent Role="Products">
+            <PropertyRef Name="productId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Regions_toCountries">
+        <End Role="Regions" Type="MasterDataService.Regions" Multiplicity="*"/>
+        <End Role="Countries" Type="MasterDataService.Countries" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Countries">
+            <PropertyRef Name="code"/>
+          </Principal>
+          <Dependent Role="Regions">
+            <PropertyRef Name="country"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Annotations Target="MasterDataService.Addresses" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.CollectionFacet">
+              <PropertyValue Property="ID" String="AddrDetails"/>
+              <PropertyValue Property="Label" String="Details"/>
+              <PropertyValue Property="Facets">
+                <Collection>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Label" String="Details"/>
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Details"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="AdministrativeData">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="validFrom"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="validTo"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Description">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="city"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Details">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="street"/>
+                  <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="postalCode"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country_code"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country/name"/>
+                  <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="region"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="building"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.HeaderFacets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Description"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#AdministrativeData"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="ID"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="TypeName" String="Address"/>
+            <PropertyValue Property="TypeNamePlural" String="Addresses"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="city"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="street"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="region"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="country/name"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="ID"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="city"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Address Internal ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/validFrom" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Valid From"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/validTo" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Valid To"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/city" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/postalCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Postal Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/street" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Street"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/building" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Building Number"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/region" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/addressType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Address Type"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/latitude" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Geo Latitude"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/longitude" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Geo Longitude"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/country_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="CollectionPath" String="Countries"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Business Partners"/>
+        <Annotation Term="Core.Description" String="Business Partners"/>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ID"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="companyName"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="email"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="address/country/name"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="partnerRole"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
+              <Annotation Term="Common.ValueList">
+                <Record Type="Common.ValueListType">
+                  <PropertyValue Property="CollectionPath" String="partnerRoles"/>
+                  <PropertyValue Property="Parameters">
+                    <Collection>
+                      <Record Type="Common.ValueListParameterInOut">
+                        <PropertyValue Property="LocalDataProperty" PropertyPath="partnerRole"/>
+                        <PropertyValue Property="ValueListProperty" String="partnerRole"/>
+                      </Record>
+                    </Collection>
+                  </PropertyValue>
+                </Record>
+              </Annotation>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="createdAt"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="ID"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Partner ID"/>
+        <Annotation Term="Core.Description" String="Partner ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Created On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Created By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Changed On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Changed By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/partnerRole" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Partner Role - Customer or Supplier"/>
+        <Annotation Term="Core.Description" String="Partner Role - Customer or Supplier"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/email" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/phoneNumber" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Primary Phone Number"/>
+        <Annotation Term="Validation.Pattern" String="((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/webAddress" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Web Site Address"/>
+        <Annotation Term="Core.Description" String="Web Site Address"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/address" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Address Association"/>
+        <Annotation Term="Core.Description" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/companyName" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Company Name"/>
+        <Annotation Term="Core.Description" String="Company Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/legalForm" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Legal Form"/>
+        <Annotation Term="Core.Description" String="Legal Form"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/address_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Address Association"/>
+        <Annotation Term="Core.Description" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/currency_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Business Partners"/>
+        <Annotation Term="Core.Description" String="Business Partners"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Id" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Partner ID"/>
+        <Annotation Term="Core.Description" String="Partner ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/EmailAddress" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/CompanyName" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Company Name"/>
+        <Annotation Term="Core.Description" String="Company Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/City" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/PostalCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Postal Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Street" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Street"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Building" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Building Number"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/CountryName" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Region" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/CreatedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Login Username"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/code1" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/alpha3" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Three Character Country Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/iso" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="ISO 3166-2 Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/region" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/sub_region" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sub Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/region_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Region Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/sub_region_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Sub Region Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/symbol" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency Symbol"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies_texts/descr" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies_texts/code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Employee Internal ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/validFrom" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Valid From"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/validTo" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Valid To"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameFirst" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Given Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameMiddle" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Middel Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameLast" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Family Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameInitials" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Initials"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/sex" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Gender"/>
+        <Annotation Term="Core.Description" String="Gender"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/language" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Primary Spoken Language"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/phoneNumber" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Primary Phone Number"/>
+        <Annotation Term="Validation.Pattern" String="((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/email" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/loginName" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Login Username"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/address" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/salaryAmount" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Salary Amount"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/accountNumber" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Bank Account Number"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/bankId" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Bank ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/bankName" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Bank Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/employeePicUrl" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Employee Picture URL"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/address_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/currency_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.ProductImages/image" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Image"/>
+        <Annotation Term="Core.Description" String="Product Image"/>
+        <Annotation Term="Core.MediaType" Path="imageType"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.ProductImages/imageType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Image Type"/>
+        <Annotation Term="Core.Description" String="Product Image Type"/>
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Products"/>
+        <Annotation Term="Core.Description" String="Products"/>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.CollectionFacet">
+              <PropertyValue Property="ID" String="ProdDetails"/>
+              <PropertyValue Property="Label" String="Details"/>
+              <PropertyValue Property="Facets">
+                <Collection>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Label" String="Details"/>
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Details"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="AdministrativeData">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdAt"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedAt"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Description">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="productId"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Details">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="typeCode"/>
+                  <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="desc"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="partner_ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="partner/companyName"/>
+                  <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="price"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="currency_code"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="currency/symbol"/>
+                  <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.HeaderFacets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Description"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#AdministrativeData"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="ImageUrl" Path="imageUrl"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="productId"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="TypeName" String="Product"/>
+            <PropertyValue Property="TypeNamePlural" String="Products"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="productId"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="category"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="imageUrl"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="productId"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Created On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Created By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Changed On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Changed By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/quantity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Quantity"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/quantityUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Quantity Unit"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/productId" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Products"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="productId"/>
+                  <PropertyValue Property="ValueListProperty" String="productId"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/typeCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Type Code"/>
+        <Annotation Term="Core.Description" String="Type Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/category" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Category"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Product Category"/>
+            <PropertyValue Property="CollectionPath" String="productCategoryVH"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="category"/>
+                  <PropertyValue Property="ValueListProperty" String="Product_Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product Category"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Name"/>
+        <Annotation Term="Core.Description" String="Product Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/desc" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Description "/>
+        <Annotation Term="Core.Description" String="Product Description "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/partner" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Supplier"/>
+        <Annotation Term="Core.Description" String="Supplier"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/weightMeasure" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Weight Measure "/>
+        <Annotation Term="Core.Description" String="Weight Measure "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/weightUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Weight Unit "/>
+        <Annotation Term="Core.Description" String="Weight Unit "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Price "/>
+        <Annotation Term="Core.Description" String="Price "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/width" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Width "/>
+        <Annotation Term="Core.Description" String="Width "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/depth" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Depth "/>
+        <Annotation Term="Core.Description" String="Depth "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/height" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Height "/>
+        <Annotation Term="Core.Description" String="Height "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/dimensionUnit" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Dimension Unit "/>
+        <Annotation Term="Core.Description" String="Dimension Unit "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/imageUrl" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Image"/>
+        <Annotation Term="Core.Description" String="Product Image"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.IsImageURL" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/partner_ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Supplier"/>
+        <Annotation Term="Core.Description" String="Supplier"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/currency_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products_texts/productId" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Products"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="productId"/>
+                  <PropertyValue Property="ValueListProperty" String="productId"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products_texts/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Name"/>
+        <Annotation Term="Core.Description" String="Product Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products_texts/desc" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Description "/>
+        <Annotation Term="Core.Description" String="Product Description "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/country" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/sub_code" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Subdivision Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/name" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.Label" String="Product Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/type" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Subdivision Type"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/ID" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="User Id"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/EMAIL" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/FIRSTNAME" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Given Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/LASTNAME" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Family Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.partnerRoles" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Business Partners"/>
+        <Annotation Term="Core.Description" String="Business Partners"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.partnerRoles/partnerRole" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Partner Role - Customer or Supplier"/>
+        <Annotation Term="Core.Description" String="Partner Role - Customer or Supplier"/>
+        <Annotation Term="UI.fieldGroup">
+          <Collection>
+            <Record>
+              <PropertyValue Property="position" Int="10"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.lineItem">
+          <Collection>
+            <Record>
+              <PropertyValue Property="importance" Path="Importance/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.partnerRoles/PARTNERDESC" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.fieldGroup">
+          <Collection>
+            <Record>
+              <PropertyValue Property="position" Int="20"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.lineItem">
+          <Collection>
+            <Record>
+              <PropertyValue Property="importance" Path="Importance/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.productCategoryVH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Products"/>
+        <Annotation Term="Core.Description" String="Products"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.EntityContainer/productCategoryVH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.productCategoryVH/Product_Category" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Common.Label" String="Product Category"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Product Category"/>
+            <PropertyValue Property="CollectionPath" String="productCategoryVH"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="Product_Category"/>
+                  <PropertyValue Property="ValueListProperty" String="Product_Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product Category"/>
+        <Annotation Term="UI.fieldGroup">
+          <Collection>
+            <Record>
+              <PropertyValue Property="position" Int="10"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.lineItem">
+          <Collection>
+            <Record>
+              <PropertyValue Property="importance" Path="Importance/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

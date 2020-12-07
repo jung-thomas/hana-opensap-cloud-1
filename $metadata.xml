@@ -1,0 +1,1320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+    <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="MasterDataService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Addresses" EntityType="MasterDataService.Addresses">
+          <NavigationPropertyBinding Path="country" Target="Countries"/>
+        </EntitySet>
+        <EntitySet Name="BusinessPartners" EntityType="MasterDataService.BusinessPartners">
+          <NavigationPropertyBinding Path="address" Target="Addresses"/>
+          <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+          <NavigationPropertyBinding Path="createdByEmployee" Target="Employees"/>
+          <NavigationPropertyBinding Path="modifiedByEmployee" Target="Employees"/>
+        </EntitySet>
+        <EntitySet Name="Buyer" EntityType="MasterDataService.Buyer"/>
+        <EntitySet Name="Countries" EntityType="MasterDataService.Countries">
+          <NavigationPropertyBinding Path="regions" Target="Regions"/>
+          <NavigationPropertyBinding Path="texts" Target="Countries_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Countries_texts"/>
+        </EntitySet>
+        <EntitySet Name="Countries_texts" EntityType="MasterDataService.Countries_texts"/>
+        <EntitySet Name="Currencies" EntityType="MasterDataService.Currencies">
+          <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+        </EntitySet>
+        <EntitySet Name="Currencies_texts" EntityType="MasterDataService.Currencies_texts"/>
+        <EntitySet Name="Employees" EntityType="MasterDataService.Employees">
+          <NavigationPropertyBinding Path="address" Target="Addresses"/>
+          <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+        </EntitySet>
+        <EntitySet Name="ProductImages" EntityType="MasterDataService.ProductImages">
+          <NavigationPropertyBinding Path="product" Target="Products"/>
+        </EntitySet>
+        <EntitySet Name="Products" EntityType="MasterDataService.Products">
+          <NavigationPropertyBinding Path="partner" Target="BusinessPartners"/>
+          <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+          <NavigationPropertyBinding Path="createdByEmployee" Target="Employees"/>
+          <NavigationPropertyBinding Path="modifiedByEmployee" Target="Employees"/>
+          <NavigationPropertyBinding Path="image" Target="ProductImages"/>
+          <NavigationPropertyBinding Path="texts" Target="Products_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Products_texts"/>
+        </EntitySet>
+        <EntitySet Name="Products_texts" EntityType="MasterDataService.Products_texts"/>
+        <EntitySet Name="Regions" EntityType="MasterDataService.Regions">
+          <NavigationPropertyBinding Path="toCountries" Target="Countries"/>
+        </EntitySet>
+        <EntitySet Name="User" EntityType="MasterDataService.User"/>
+        <EntitySet Name="partnerRoles" EntityType="MasterDataService.partnerRoles"/>
+        <EntitySet Name="productCategoryVH" EntityType="MasterDataService.productCategoryVH"/>
+        <FunctionImport Name="loadProductImages" Function="MasterDataService.loadProductImages"/>
+      </EntityContainer>
+      <EntityType Name="Addresses">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="validFrom"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7" Nullable="false"/>
+        <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="city" Type="Edm.String" MaxLength="40"/>
+        <Property Name="postalCode" Type="Edm.String" MaxLength="10"/>
+        <Property Name="street" Type="Edm.String" MaxLength="60"/>
+        <Property Name="building" Type="Edm.String" MaxLength="10"/>
+        <NavigationProperty Name="country" Type="MasterDataService.Countries">
+          <ReferentialConstraint Property="country_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="region" Type="Edm.String" MaxLength="4"/>
+        <Property Name="addressType" Type="Edm.String" MaxLength="2"/>
+        <Property Name="latitude" Type="Edm.Double"/>
+        <Property Name="longitude" Type="Edm.Double"/>
+        <Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="BusinessPartners">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="partnerRole" Type="Edm.Int32"/>
+        <Property Name="email" Type="Edm.String" MaxLength="255"/>
+        <Property Name="phoneNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="webAddress" Type="Edm.String" MaxLength="1024"/>
+        <NavigationProperty Name="address" Type="MasterDataService.Addresses">
+          <OnDelete Action="Cascade"/>
+          <ReferentialConstraint Property="address_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="companyName" Type="Edm.String" MaxLength="80"/>
+        <Property Name="legalForm" Type="Edm.String" MaxLength="10"/>
+        <NavigationProperty Name="currency" Type="MasterDataService.Currencies">
+          <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <NavigationProperty Name="createdByEmployee" Type="MasterDataService.Employees"/>
+        <NavigationProperty Name="modifiedByEmployee" Type="MasterDataService.Employees"/>
+        <Property Name="address_ID" Type="Edm.Guid"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="Buyer">
+        <Key>
+          <PropertyRef Name="Id"/>
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="EmailAddress" Type="Edm.String" MaxLength="255"/>
+        <Property Name="CompanyName" Type="Edm.String" MaxLength="80"/>
+        <Property Name="City" Type="Edm.String" MaxLength="40"/>
+        <Property Name="PostalCode" Type="Edm.String" MaxLength="10"/>
+        <Property Name="Street" Type="Edm.String" MaxLength="60"/>
+        <Property Name="Building" Type="Edm.String" MaxLength="10"/>
+        <Property Name="Country" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CountryName" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Region" Type="Edm.String" MaxLength="4"/>
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="12"/>
+      </EntityType>
+      <EntityType Name="Countries">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="code1" Type="Edm.Int32"/>
+        <Property Name="alpha3" Type="Edm.String" MaxLength="3"/>
+        <Property Name="iso" Type="Edm.String" MaxLength="16"/>
+        <Property Name="region" Type="Edm.String" MaxLength="20"/>
+        <Property Name="sub_region" Type="Edm.String" MaxLength="40"/>
+        <Property Name="region_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="sub_region_code" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="regions" Type="Collection(MasterDataService.Regions)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="texts" Type="Collection(MasterDataService.Countries_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="MasterDataService.Countries_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Countries_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Currencies">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+        <Property Name="numcode" Type="Edm.Int32"/>
+        <Property Name="exponent" Type="Edm.Int32"/>
+        <Property Name="minor" Type="Edm.String"/>
+        <NavigationProperty Name="texts" Type="Collection(MasterDataService.Currencies_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="MasterDataService.Currencies_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Currencies_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Employees">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="validFrom"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="validFrom" Type="Edm.DateTimeOffset" Precision="7" Nullable="false"/>
+        <Property Name="validTo" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="nameFirst" Type="Edm.String" MaxLength="40"/>
+        <Property Name="nameMiddle" Type="Edm.String" MaxLength="40"/>
+        <Property Name="nameLast" Type="Edm.String" MaxLength="40"/>
+        <Property Name="nameInitials" Type="Edm.String" MaxLength="10"/>
+        <Property Name="sex" Type="Edm.String" MaxLength="1"/>
+        <Property Name="language" Type="Edm.String" MaxLength="1"/>
+        <Property Name="phoneNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="email" Type="Edm.String" MaxLength="255"/>
+        <Property Name="loginName" Type="Edm.String" MaxLength="12"/>
+        <NavigationProperty Name="address" Type="MasterDataService.Addresses">
+          <OnDelete Action="Cascade"/>
+          <ReferentialConstraint Property="address_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="currency" Type="MasterDataService.Currencies">
+          <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="salaryAmount" Type="Edm.Decimal" Scale="2" Precision="15"/>
+        <Property Name="accountNumber" Type="Edm.String" MaxLength="10"/>
+        <Property Name="bankId" Type="Edm.String" MaxLength="10"/>
+        <Property Name="bankName" Type="Edm.String" MaxLength="255"/>
+        <Property Name="employeePicUrl" Type="Edm.String" MaxLength="255"/>
+        <Property Name="address_ID" Type="Edm.Guid"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="ProductImages">
+        <Key>
+          <PropertyRef Name="product_productId"/>
+        </Key>
+        <NavigationProperty Name="product" Type="MasterDataService.Products">
+          <ReferentialConstraint Property="product_productId" ReferencedProperty="productId"/>
+        </NavigationProperty>
+        <Property Name="image" Type="Edm.Stream"/>
+        <Property Name="imageType" Type="Edm.String"/>
+        <Property Name="product_productId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Products">
+        <Key>
+          <PropertyRef Name="productId"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="quantity" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="quantityUnit" Type="Edm.String" MaxLength="3"/>
+        <Property Name="productId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="typeCode" Type="Edm.String" MaxLength="2"/>
+        <Property Name="category" Type="Edm.String" MaxLength="40"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="desc" Type="Edm.String"/>
+        <NavigationProperty Name="partner" Type="MasterDataService.BusinessPartners">
+          <ReferentialConstraint Property="partner_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="weightMeasure" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="weightUnit" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="currency" Type="MasterDataService.Currencies">
+          <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="15"/>
+        <Property Name="width" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="depth" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="height" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="dimensionUnit" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="createdByEmployee" Type="MasterDataService.Employees"/>
+        <NavigationProperty Name="modifiedByEmployee" Type="MasterDataService.Employees"/>
+        <Property Name="imageUrl" Type="Edm.String"/>
+        <NavigationProperty Name="image" Type="MasterDataService.ProductImages">
+          <OnDelete Action="Cascade"/>
+          <ReferentialConstraint Property="image_product_productId" ReferencedProperty="product_productId"/>
+        </NavigationProperty>
+        <NavigationProperty Name="texts" Type="Collection(MasterDataService.Products_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="MasterDataService.Products_texts">
+          <ReferentialConstraint Property="productId" ReferencedProperty="productId"/>
+        </NavigationProperty>
+        <Property Name="partner_ID" Type="Edm.Guid"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="image_product_productId" Type="Edm.String" MaxLength="10"/>
+      </EntityType>
+      <EntityType Name="Products_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="productId"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="productId" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="desc" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Regions">
+        <Key>
+          <PropertyRef Name="country"/>
+          <PropertyRef Name="sub_code"/>
+        </Key>
+        <Property Name="country" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="sub_code" Type="Edm.String" MaxLength="5" Nullable="false"/>
+        <NavigationProperty Name="toCountries" Type="MasterDataService.Countries">
+          <ReferentialConstraint Property="country" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="name" Type="Edm.String" MaxLength="80"/>
+        <Property Name="type" Type="Edm.String" MaxLength="80"/>
+      </EntityType>
+      <EntityType Name="User">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.String" Nullable="false"/>
+        <Property Name="EMAIL" Type="Edm.String" MaxLength="255"/>
+        <Property Name="FIRSTNAME" Type="Edm.String" MaxLength="40"/>
+        <Property Name="LASTNAME" Type="Edm.String" MaxLength="40"/>
+      </EntityType>
+      <EntityType Name="partnerRoles">
+        <Key>
+          <PropertyRef Name="partnerRole"/>
+        </Key>
+        <Property Name="partnerRole" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="PARTNERDESC" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="productCategoryVH">
+        <Key>
+          <PropertyRef Name="Product_Category"/>
+        </Key>
+        <Property Name="Product_Category" Type="Edm.String" MaxLength="40" Nullable="false"/>
+      </EntityType>
+      <Function Name="loadProductImages" IsBound="false" IsComposable="false">
+        <ReturnType Type="Edm.Boolean"/>
+      </Function>
+      <Annotations Target="MasterDataService.Addresses">
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.CollectionFacet">
+              <PropertyValue Property="ID" String="AddrDetails"/>
+              <PropertyValue Property="Label" String="Details"/>
+              <PropertyValue Property="Facets">
+                <Collection>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Label" String="Details"/>
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Details"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="AdministrativeData">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="validFrom"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="validTo"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Description">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="city"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Details">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="street"/>
+                  <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="postalCode"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country_code"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="country/name"/>
+                  <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="region"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="building"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.HeaderFacets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Description"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#AdministrativeData"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="ID"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="TypeName" String="Address"/>
+            <PropertyValue Property="TypeNamePlural" String="Addresses"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="city"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="street"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="region"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="country/name"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="ID"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="city"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/ID">
+        <Annotation Term="Common.Label" String="Address Internal ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/validFrom">
+        <Annotation Term="Common.Label" String="Valid From"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/validTo">
+        <Annotation Term="Common.Label" String="Valid To"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/city">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/postalCode">
+        <Annotation Term="Common.Label" String="Postal Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/street">
+        <Annotation Term="Common.Label" String="Street"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/building">
+        <Annotation Term="Common.Label" String="Building Number"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/country">
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/region">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/addressType">
+        <Annotation Term="Common.Label" String="Address Type"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/latitude">
+        <Annotation Term="Common.Label" String="Geo Latitude"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/longitude">
+        <Annotation Term="Common.Label" String="Geo Longitude"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Addresses/country_code">
+        <Annotation Term="Common.Label" String="Country"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Country"/>
+            <PropertyValue Property="CollectionPath" String="Countries"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners">
+        <Annotation Term="Common.Label" String="Business Partners"/>
+        <Annotation Term="Core.Description" String="Business Partners"/>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="ID"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="companyName"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="email"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="address/country/name"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="partnerRole"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
+              <Annotation Term="Common.ValueList">
+                <Record Type="Common.ValueListType">
+                  <PropertyValue Property="CollectionPath" String="partnerRoles"/>
+                  <PropertyValue Property="Parameters">
+                    <Collection>
+                      <Record Type="Common.ValueListParameterInOut">
+                        <PropertyValue Property="LocalDataProperty" PropertyPath="partnerRole"/>
+                        <PropertyValue Property="ValueListProperty" String="partnerRole"/>
+                      </Record>
+                    </Collection>
+                  </PropertyValue>
+                </Record>
+              </Annotation>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="createdAt"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="ID"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/ID">
+        <Annotation Term="Common.Label" String="Partner ID"/>
+        <Annotation Term="Core.Description" String="Partner ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/createdAt">
+        <Annotation Term="Common.Label" String="Created On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/createdBy">
+        <Annotation Term="Common.Label" String="Created By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/modifiedAt">
+        <Annotation Term="Common.Label" String="Changed On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/modifiedBy">
+        <Annotation Term="Common.Label" String="Changed By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/partnerRole">
+        <Annotation Term="Common.Label" String="Partner Role - Customer or Supplier"/>
+        <Annotation Term="Core.Description" String="Partner Role - Customer or Supplier"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/email">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/phoneNumber">
+        <Annotation Term="Common.Label" String="Primary Phone Number"/>
+        <Annotation Term="Validation.Pattern" String="((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/webAddress">
+        <Annotation Term="Common.Label" String="Web Site Address"/>
+        <Annotation Term="Core.Description" String="Web Site Address"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/address">
+        <Annotation Term="Common.Label" String="Address Association"/>
+        <Annotation Term="Core.Description" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/companyName">
+        <Annotation Term="Common.Label" String="Company Name"/>
+        <Annotation Term="Core.Description" String="Company Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/legalForm">
+        <Annotation Term="Common.Label" String="Legal Form"/>
+        <Annotation Term="Core.Description" String="Legal Form"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/currency">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/address_ID">
+        <Annotation Term="Common.Label" String="Address Association"/>
+        <Annotation Term="Core.Description" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.BusinessPartners/currency_code">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer">
+        <Annotation Term="Common.Label" String="Business Partners"/>
+        <Annotation Term="Core.Description" String="Business Partners"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Id">
+        <Annotation Term="Common.Label" String="Partner ID"/>
+        <Annotation Term="Core.Description" String="Partner ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/EmailAddress">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/CompanyName">
+        <Annotation Term="Common.Label" String="Company Name"/>
+        <Annotation Term="Core.Description" String="Company Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/City">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/PostalCode">
+        <Annotation Term="Common.Label" String="Postal Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Street">
+        <Annotation Term="Common.Label" String="Street"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Building">
+        <Annotation Term="Common.Label" String="Building Number"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Country">
+        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/CountryName">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/Region">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Buyer/CreatedBy">
+        <Annotation Term="Common.Label" String="Login Username"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/descr">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/code">
+        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/code1">
+        <Annotation Term="Common.Label" String="Country Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/alpha3">
+        <Annotation Term="Common.Label" String="Three Character Country Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/iso">
+        <Annotation Term="Common.Label" String="ISO 3166-2 Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/region">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/sub_region">
+        <Annotation Term="Common.Label" String="Sub Region"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/region_code">
+        <Annotation Term="Common.Label" String="Region Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries/sub_region_code">
+        <Annotation Term="Common.Label" String="Sub Region Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries_texts/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries_texts/descr">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Countries_texts/code">
+        <Annotation Term="Common.Label" String="Country Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/descr">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/code">
+        <Annotation Term="Common.Label" String="Currency Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies/symbol">
+        <Annotation Term="Common.Label" String="Currency Symbol"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies_texts/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies_texts/descr">
+        <Annotation Term="Common.Label" String="Description"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Currencies_texts/code">
+        <Annotation Term="Common.Label" String="Currency Code"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/ID">
+        <Annotation Term="Common.Label" String="Employee Internal ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/validFrom">
+        <Annotation Term="Common.Label" String="Valid From"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/validTo">
+        <Annotation Term="Common.Label" String="Valid To"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameFirst">
+        <Annotation Term="Common.Label" String="Given Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameMiddle">
+        <Annotation Term="Common.Label" String="Middel Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameLast">
+        <Annotation Term="Common.Label" String="Family Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/nameInitials">
+        <Annotation Term="Common.Label" String="Initials"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/sex">
+        <Annotation Term="Common.Label" String="Gender"/>
+        <Annotation Term="Core.Description" String="Gender"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/language">
+        <Annotation Term="Common.Label" String="Primary Spoken Language"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/phoneNumber">
+        <Annotation Term="Common.Label" String="Primary Phone Number"/>
+        <Annotation Term="Validation.Pattern" String="((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/email">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/loginName">
+        <Annotation Term="Common.Label" String="Login Username"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/address">
+        <Annotation Term="Common.Label" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/currency">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/salaryAmount">
+        <Annotation Term="Common.Label" String="Salary Amount"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/accountNumber">
+        <Annotation Term="Common.Label" String="Bank Account Number"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/bankId">
+        <Annotation Term="Common.Label" String="Bank ID"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/bankName">
+        <Annotation Term="Common.Label" String="Bank Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/employeePicUrl">
+        <Annotation Term="Common.Label" String="Employee Picture URL"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/address_ID">
+        <Annotation Term="Common.Label" String="Address Association"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Employees/currency_code">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.ProductImages/image">
+        <Annotation Term="Common.Label" String="Product Image"/>
+        <Annotation Term="Core.Description" String="Product Image"/>
+        <Annotation Term="Core.MediaType" Path="imageType"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.ProductImages/imageType">
+        <Annotation Term="Common.Label" String="Product Image Type"/>
+        <Annotation Term="Core.Description" String="Product Image Type"/>
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products">
+        <Annotation Term="Common.Label" String="Products"/>
+        <Annotation Term="Core.Description" String="Products"/>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.CollectionFacet">
+              <PropertyValue Property="ID" String="ProdDetails"/>
+              <PropertyValue Property="Label" String="Details"/>
+              <PropertyValue Property="Facets">
+                <Collection>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Label" String="Details"/>
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Details"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="AdministrativeData">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedBy"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="createdAt"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="modifiedAt"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Description">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="productId"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Details">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="typeCode"/>
+                  <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="desc"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="partner_ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="partner/companyName"/>
+                  <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="price"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="currency_code"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="currency/symbol"/>
+                  <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/ReadOnly"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.HeaderFacets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Description"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#AdministrativeData"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="ImageUrl" Path="imageUrl"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="productId"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="TypeName" String="Product"/>
+            <PropertyValue Property="TypeNamePlural" String="Products"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="productId"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="category"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="imageUrl"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="productId"/>
+                  <PropertyValue Property="Descending" Bool="false"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/createdAt">
+        <Annotation Term="Common.Label" String="Created On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/createdBy">
+        <Annotation Term="Common.Label" String="Created By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/modifiedAt">
+        <Annotation Term="Common.Label" String="Changed On"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/modifiedBy">
+        <Annotation Term="Common.Label" String="Changed By"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="User's unique ID"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/quantity">
+        <Annotation Term="Common.Label" String="Quantity"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/quantityUnit">
+        <Annotation Term="Common.Label" String="Quantity Unit"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/productId">
+        <Annotation Term="Common.Label" String="Product"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Products"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="productId"/>
+                  <PropertyValue Property="ValueListProperty" String="productId"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/typeCode">
+        <Annotation Term="Common.Label" String="Type Code"/>
+        <Annotation Term="Core.Description" String="Type Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/category">
+        <Annotation Term="Common.Label" String="Product Category"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Product Category"/>
+            <PropertyValue Property="CollectionPath" String="productCategoryVH"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="category"/>
+                  <PropertyValue Property="ValueListProperty" String="Product_Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product Category"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/name">
+        <Annotation Term="Common.Label" String="Product Name"/>
+        <Annotation Term="Core.Description" String="Product Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/desc">
+        <Annotation Term="Common.Label" String="Product Description "/>
+        <Annotation Term="Core.Description" String="Product Description "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/partner">
+        <Annotation Term="Common.Label" String="Supplier"/>
+        <Annotation Term="Core.Description" String="Supplier"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/weightMeasure">
+        <Annotation Term="Common.Label" String="Weight Measure "/>
+        <Annotation Term="Core.Description" String="Weight Measure "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/weightUnit">
+        <Annotation Term="Common.Label" String="Weight Unit "/>
+        <Annotation Term="Core.Description" String="Weight Unit "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/currency">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/price">
+        <Annotation Term="Common.Label" String="Price "/>
+        <Annotation Term="Core.Description" String="Price "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/width">
+        <Annotation Term="Common.Label" String="Width "/>
+        <Annotation Term="Core.Description" String="Width "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/depth">
+        <Annotation Term="Common.Label" String="Depth "/>
+        <Annotation Term="Core.Description" String="Depth "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/height">
+        <Annotation Term="Common.Label" String="Height "/>
+        <Annotation Term="Core.Description" String="Height "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/dimensionUnit">
+        <Annotation Term="Common.Label" String="Dimension Unit "/>
+        <Annotation Term="Core.Description" String="Dimension Unit "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/imageUrl">
+        <Annotation Term="Common.Label" String="Product Image"/>
+        <Annotation Term="Core.Description" String="Product Image"/>
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.IsImageURL" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/partner_ID">
+        <Annotation Term="Common.Label" String="Supplier"/>
+        <Annotation Term="Core.Description" String="Supplier"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products/currency_code">
+        <Annotation Term="Common.Label" String="Currency"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Currency"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Currency code as specified by ISO 4217"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products_texts/productId">
+        <Annotation Term="Common.Label" String="Product"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="CollectionPath" String="Products"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="productId"/>
+                  <PropertyValue Property="ValueListProperty" String="productId"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products_texts/name">
+        <Annotation Term="Common.Label" String="Product Name"/>
+        <Annotation Term="Core.Description" String="Product Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Products_texts/desc">
+        <Annotation Term="Common.Label" String="Product Description "/>
+        <Annotation Term="Core.Description" String="Product Description "/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/country">
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/sub_code">
+        <Annotation Term="Common.Label" String="Subdivision Code"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/name">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.Label" String="Product Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.Regions/type">
+        <Annotation Term="Common.Label" String="Subdivision Type"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/ID">
+        <Annotation Term="Common.Label" String="User Id"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/EMAIL">
+        <Annotation Term="Common.Label" String="Email Address"/>
+        <Annotation Term="Validation.Pattern" String="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/FIRSTNAME">
+        <Annotation Term="Common.Label" String="Given Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.User/LASTNAME">
+        <Annotation Term="Common.Label" String="Family Name"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.partnerRoles">
+        <Annotation Term="Common.Label" String="Business Partners"/>
+        <Annotation Term="Core.Description" String="Business Partners"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.partnerRoles/partnerRole">
+        <Annotation Term="Common.Label" String="Partner Role - Customer or Supplier"/>
+        <Annotation Term="Core.Description" String="Partner Role - Customer or Supplier"/>
+        <Annotation Term="UI.fieldGroup">
+          <Collection>
+            <Record>
+              <PropertyValue Property="position" Int="10"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.lineItem">
+          <Collection>
+            <Record>
+              <PropertyValue Property="importance" Path="Importance/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.partnerRoles/PARTNERDESC">
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.fieldGroup">
+          <Collection>
+            <Record>
+              <PropertyValue Property="position" Int="20"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.lineItem">
+          <Collection>
+            <Record>
+              <PropertyValue Property="importance" Path="Importance/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.productCategoryVH">
+        <Annotation Term="Common.Label" String="Products"/>
+        <Annotation Term="Core.Description" String="Products"/>
+      </Annotations>
+      <Annotations Target="MasterDataService.EntityContainer/productCategoryVH">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MasterDataService.productCategoryVH/Product_Category">
+        <Annotation Term="Common.Label" String="Product Category"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Product Category"/>
+            <PropertyValue Property="CollectionPath" String="productCategoryVH"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="Product_Category"/>
+                  <PropertyValue Property="ValueListProperty" String="Product_Category"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Product Category"/>
+        <Annotation Term="UI.fieldGroup">
+          <Collection>
+            <Record>
+              <PropertyValue Property="position" Int="10"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.lineItem">
+          <Collection>
+            <Record>
+              <PropertyValue Property="importance" Path="Importance/High"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

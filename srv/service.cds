@@ -17,70 +17,70 @@ using {
     opensap.MD
 } from '../db/schema';
 
-// using BUYER as BuyerView from '../db/schema';
+using BUYER as BuyerView from '../db/schema';
 using USERDATA_USER_LOCAL as UserDetails from '../db/schema';
 
-// service POService @(impl : '../srv/handlers/po-service.js')@(path : '/POService') {
+service POService @(impl : './handlers/po-service.js')@(path : '/odata/v4/POService') {
 
 
-//     @readonly
-//     entity Addresses                             as projection on Addr;
+    @readonly
+    entity Addresses                             as projection on Addr;
 
-//     @readonly
-//     entity Employees                             as projection on Empl;
+    @readonly
+    entity Employees                             as projection on Empl;
 
-//     @readonly
-//     entity BusinessPartners                      as projection on BP;
+    @readonly
+    entity BusinessPartners                      as projection on BP;
 
-//     @readonly
-//     entity Buyer                                 as projection on BuyerView;
+    @readonly
+    entity Buyer                                 as projection on BuyerView;
 
-//     @readonly
-//     entity Products                              as projection on Prod;
+    @readonly
+    entity Products                              as projection on Prod;
 
-//     @readonly
-//     view productCategoryVH as select from prodCat;
+    @readonly
+    view productCategoryVH as select from prodCat;
 
-//     entity POs @(
-//         title               : '{i18n>poService}',
-//         odata.draft.enabled : true
-//     )                                            as projection on Headers {
-//         * , item : redirected to POItems
-//     };
+    entity POs @(
+        title               : '{i18n>poService}',
+        odata.draft.enabled : true
+    )                                            as projection on Headers {
+        * , item : redirected to POItems
+    };
 
-//     entity POnoDraft @(
-//         title               : '{i18n>poService}',
-//         odata.draft.enabled : false
-//     )                                            as projection on Headers {
-//         * , item : redirected to POItemsNoDraft
-//     };
+    entity POnoDraft @(
+        title               : '{i18n>poService}',
+        odata.draft.enabled : false
+    )                                            as projection on Headers {
+        * , item : redirected to POItemsNoDraft
+    };
 
-//     event poChange : {
-//         po : POs;
-//     }
+    event poChange : {
+        po : POs;
+    }
 
-//     entity POItems @(title : '{i18n>poService}') as projection on Items {
-//         * , poHeader : redirected to POs, product : redirected to Products
-//     };
+    entity POItems @(title : '{i18n>poService}') as projection on Items {
+        * , poHeader : redirected to POs, product : redirected to Products
+    };
 
-//     entity POItemsNoDraft @(
-//         title               : '{i18n>poService}',
-//         odata.draft.enabled : false
-//     )                                            as projection on Items {
+    entity POItemsNoDraft @(
+        title               : '{i18n>poService}',
+        odata.draft.enabled : false
+    )                                            as projection on Items {
 
-//         * , poHeader : redirected to POnoDraft, product : redirected to Products
-//     };
+        * , poHeader : redirected to POnoDraft, product : redirected to Products
+    };
 
-//     @readonly
-//     @Analytics.query : true
-//     view PO_Worklist as select from POWorklist;
+    @readonly
+    @Analytics.query : true
+    view PO_Worklist as select from POWorklist;
 
 
-//     function sleep() returns Boolean;
+    function sleep() returns Boolean;
 
-// }
+}
 
-service MasterDataService @(path : '/MasterDataService') {
+service MasterDataService @(impl : './handlers/md-service.js')@(path : '/odata/v4/MasterDataService') {
     entity Addresses                                             as projection on Addr;
     entity Employees                                             as projection on Empl;
     entity User                                                  as projection on UserDetails;
