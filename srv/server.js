@@ -22,7 +22,7 @@ cds.on('served', () => {
 
 // delegate to default server.js:
 module.exports = async (o) => {
-    o.port = process.env.PORT || 4001
+    o.port = process.env.PORT || 4004
     //API route (Disabled by default)
     // o.baseDir = process.cwd()
     o.baseDir = global.__base;
