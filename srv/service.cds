@@ -20,7 +20,8 @@ using {
 using BUYER as BuyerView from '../db/schema';
 using USERDATA_USER_LOCAL as UserDetails from '../db/schema';
 
-service POService @(impl : './handlers/po-service.js')@(path : '/odata/v4/POService') {
+// service POService @(impl : './handlers/po-service.js')@(path : '/odata/v4/POService') {
+service POService @(impl : './handlers/po-service.js')@(path : '/POService') {
 
 
     @readonly
@@ -80,7 +81,8 @@ service POService @(impl : './handlers/po-service.js')@(path : '/odata/v4/POServ
 
 }
 
-service MasterDataService @(impl : './handlers/md-service.js')@(path : '/odata/v4/MasterDataService') {
+// service MasterDataService @(impl : './handlers/md-service.js')@(path : '/odata/v4/MasterDataService') {
+service MasterDataService @(impl : './handlers/md-service.js')@(path : '/MasterDataService') {
     entity Addresses                                             as projection on Addr;
     entity Employees                                             as projection on Empl;
     entity User                                                  as projection on UserDetails;

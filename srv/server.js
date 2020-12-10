@@ -13,7 +13,8 @@ const TextBundle = require("@sap/textbundle").TextBundle
 // global.__bundle = new TextBundle("../_i18n/i18n", require("./utils/locale").getLocale())
 
 
-cds.on('bootstrap', app => app.use(proxy()));
+// cds.on('bootstrap', app => app.use(proxy()));
+cds.on('bootstrap', app => app.use(proxy({ services: { "/MasterDataService/": "MasterDataService", "/POService/": "POService" } })))
 cds.on('served', () => {
     // add more middleware after all cds servies
 })
@@ -21,10 +22,10 @@ cds.on('served', () => {
 
 // delegate to default server.js:
 module.exports = async (o) => {
-    o.port = process.env.PORT || 4004
+    o.port = process.env.PORT || 4001
     //API route (Disabled by default)
     // o.baseDir = process.cwd()
-    o.baseDir = global.__base;    
+    o.baseDir = global.__base;
     o.routes = []
 
     const express = require('express')
@@ -32,7 +33,7 @@ module.exports = async (o) => {
     app.express = express
     // app.baseDir = process.cwd()
     app.baseDir = o.baseDir;
-    o.app = app    
+    o.app = app
     const path = require('path')
     const fileExists = require('fs').existsSync
     let expressFile = path.join(app.baseDir, 'server/express.js')
@@ -40,22 +41,22 @@ module.exports = async (o) => {
         await require(expressFile)(app)
     }
 
-    //V2 fallback
-    cds.serve('POService')
-        .from(global.__base + "/gen/csn.json")
-        .to("fiori")
-        .at('/POService').in(app)
-        .catch((err) => {
-            app.logger.error(err);
-        })
+    // //V2 fallback
+    // cds.serve('POService')
+    //     .from(global.__base + "/gen/csn.json")
+    //     .to("fiori")
+    //     .at('/POService').in(app)
+    //     .catch((err) => {
+    //         app.logger.error(err);
+    //     })
 
-    cds.serve('MasterDataService')
-        .from(global.__base + "/gen/csn.json")
-        .to("fiori")
-        .at('/MasterDataService').in(app)
-        .catch((err) => {
-            app.logger.error(err);
-        })
+    // cds.serve('MasterDataService')
+    //     .from(global.__base + "/gen/csn.json")
+    //     .to("fiori")
+    //     .at('/MasterDataService').in(app)
+    //     .catch((err) => {
+    //         app.logger.error(err);
+    //     })
 
     o.app.httpServer = await cds.server(o)
 

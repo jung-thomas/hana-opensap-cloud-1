@@ -42,11 +42,6 @@
         "build": "cds build/all --clean"
     },
     "cds": {
-        "cov2ap": {
-            "targetPath": "odata/v4",
-            "path": "odata/v2",
-            "disableNetworkLog": false
-        },
         "build": {
             "target": ".",
             "tasks": [
